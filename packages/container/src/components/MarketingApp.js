@@ -1,28 +1,36 @@
 import { component } from "marketing/MarketingApp";
 import React, { useRef, useEffect } from "react";
+import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
 export default () => {
   const ref = useRef(null);
   const navigate = useNavigate();
   const location = useLocation();
+  const [childReturn, setChildReturn] = useState();
 
-  // TODO: bug when mount and unmount the route when moving between routes
   useEffect(() => {
     const { mount, unmount } = component();
 
-    mount(ref.current, {
+    const childReturn = mount(ref.current, {
       onNavigate: ({ pathname: nextPathname }) => {
-        const { pathname } = location;
-        if (pathname !== nextPathname) navigate(nextPathname);
+        if (location.pathname !== nextPathname) navigate(nextPathname);
       },
     });
 
+    setChildReturn(childReturn);
+
     return () => {
-      console.log("marketing app unmounted");
       unmount();
     };
-  });
+  }, []);
+
+  useEffect(() => {
+    if (childReturn) {
+      const { onParentNavigate } = childReturn;
+      onParentNavigate(location);
+    }
+  }, [location, childReturn]);
 
   return <div ref={ref} />;
 };

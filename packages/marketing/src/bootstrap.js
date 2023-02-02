@@ -1,18 +1,28 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import { createMemoryHistory } from "history";
+import { createMemoryHistory, createBrowserHistory } from "history";
 import App from "./App";
 
 const component = () => {
   let root;
-  
-  const mount = (el, { onNavigate }) => {
-    const history = createMemoryHistory();
-    history.listen(({ location }) => onNavigate(location));
+
+  const mount = (el, { onNavigate, defaultHistory } = {}) => {
+    const history = defaultHistory || createMemoryHistory();
+
+    if (onNavigate) {
+      history.listen(({ location }) => onNavigate(location));
+    }
 
     root = ReactDOM.createRoot(el);
-
     root.render(<App history={history} />);
+
+    return {
+      onParentNavigate(location) {
+        const { pathname: nextPathname } = location;
+        const { pathname } = history.location;
+        if (pathname !== nextPathname) history.push(nextPathname);
+      },
+    };
   };
 
   const unmount = () => root.unmount();
@@ -26,9 +36,10 @@ const component = () => {
 // call mount immediately
 if (process.env.NODE_ENV === "development") {
   const devRoot = document.querySelector("#_marketing-dev-root");
+  const { mount } = component();
 
   if (devRoot) {
-    mount(devRoot);
+    mount(devRoot, { defaultHistory: createBrowserHistory() });
   }
 }
 

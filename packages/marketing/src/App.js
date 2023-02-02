@@ -20,7 +20,7 @@ export default ({ history }) => {
         <CustomRouter history={history}>
           <Routes>
             <Route path="/pricing" element={<Pricing />} />
-            <Route index element={<Landing />} />
+            <Route path="/" element={<Landing />} />
           </Routes>
         </CustomRouter>
       </StylesProvider>
