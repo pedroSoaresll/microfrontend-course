@@ -24,3 +24,7 @@ https://d3m4s1y7xi57al.cloudfront.net/
 * To handle Navigation
   - To handle with memory and browser history
   - Route synchronization between container and micro frontend
+* Performance considerations
+  - `publicPath` for webpack development server
+  - History initial entries
+  - Lazy loading micro frontends
