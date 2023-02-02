@@ -2,7 +2,7 @@ import React, { useRef, useEffect } from "react";
 import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
-export default ({ component }) => {
+export default ({ component, onSignIn }) => {
   const ref = useRef(null);
   const navigate = useNavigate();
   const location = useLocation();
@@ -16,6 +16,7 @@ export default ({ component }) => {
       onNavigate: ({ pathname: nextPathname }) => {
         if (location.pathname !== nextPathname) navigate(nextPathname);
       },
+      onSignIn,
     });
 
     setChildReturn(childReturn);

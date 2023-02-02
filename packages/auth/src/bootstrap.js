@@ -6,7 +6,10 @@ import App from "./App";
 const component = () => {
   let root;
 
-  const mount = (el, { onNavigate, defaultHistory, initialPath } = {}) => {
+  const mount = (
+    el,
+    { onNavigate, onSignIn, defaultHistory, initialPath } = {}
+  ) => {
     const history =
       defaultHistory ||
       createMemoryHistory({
@@ -18,7 +21,7 @@ const component = () => {
     }
 
     root = ReactDOM.createRoot(el);
-    root.render(<App history={history} />);
+    root.render(<App history={history} onSignIn={onSignIn} />);
 
     return {
       onParentNavigate(location) {
