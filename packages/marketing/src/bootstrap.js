@@ -6,8 +6,10 @@ import App from "./App";
 const component = () => {
   let root;
 
-  const mount = (el, { onNavigate, defaultHistory } = {}) => {
-    const history = defaultHistory || createMemoryHistory();
+  const mount = (el, { onNavigate, defaultHistory, initialPath } = {}) => {
+    const history = defaultHistory || createMemoryHistory({
+      initialEntries: [initialPath]
+    });
 
     if (onNavigate) {
       history.listen(({ location }) => onNavigate(location));

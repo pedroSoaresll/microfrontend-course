@@ -2,13 +2,17 @@ const { merge } = require("webpack-merge");
 const ModuleFederationPlugin = require("webpack/lib/container/ModuleFederationPlugin");
 const commonConfig = require("./webpack.common");
 const packageJson = require("../package.json");
-const webpack = require('webpack')
+
+const PORT = 8081
 
 const devConfig = {
   mode: "development",
   devtool: 'source-map',
+  output: {
+    publicPath: `http://localhost:${PORT}/`
+  },
   devServer: {
-    port: 8081,
+    port: PORT,
     historyApiFallback: true
   },
   plugins: [
